@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"sca/internal/models"
+	"sca/internal/domain"
 )
 
 type MissionPostgres struct {
@@ -14,7 +14,7 @@ func NewMissionPostgres(db *sqlx.DB) *MissionPostgres {
 	return &MissionPostgres{db: db}
 }
 
-func (r *MissionPostgres) Create(mission models.Mission) (int, error) {
+func (r *MissionPostgres) Create(mission domain.Mission) (int, error) {
 	var missionID int
 
 	query := fmt.Sprintf("INSERT INTO %s (cat_id, complete) VALUES ($1, $2) RETURNING id", MissionsTable)
@@ -36,9 +36,9 @@ func (r *MissionPostgres) Create(mission models.Mission) (int, error) {
 	return missionID, err
 }
 
-func (r *MissionPostgres) Update(id int, mission models.UpdatedMission) error {
+func (r *MissionPostgres) Update(id int, mission domain.UpdatedMission) error {
 	//get mission to check parameters
-	var missionToCheck models.Mission
+	var missionToCheck domain.Mission
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", MissionsTable)
 
@@ -106,8 +106,8 @@ func (r *MissionPostgres) Delete(id int) error {
 	return err
 }
 
-func (r *MissionPostgres) GetByID(id int) (models.Mission, error) {
-	var mission models.Mission
+func (r *MissionPostgres) GetByID(id int) (domain.Mission, error) {
+	var mission domain.Mission
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", MissionsTable)
 	err := r.db.Get(&mission, query, id)
@@ -115,8 +115,8 @@ func (r *MissionPostgres) GetByID(id int) (models.Mission, error) {
 	return mission, err
 }
 
-func (r *MissionPostgres) GetAll() ([]models.Mission, error) {
-	var missions []models.Mission
+func (r *MissionPostgres) GetAll() ([]domain.Mission, error) {
+	var missions []domain.Mission
 
 	query := fmt.Sprintf("SELECT * FROM %s", MissionsTable)
 	err := r.db.Select(&missions, query)
@@ -131,7 +131,7 @@ func (r *MissionPostgres) DeleteTarget(missionId, targetId int) error {
 	return err
 }
 
-func (r *MissionPostgres) CreateTarget(missionId int, target models.Target) (int, error) {
+func (r *MissionPostgres) CreateTarget(missionId int, target domain.Target) (int, error) {
 	var id int
 
 	query := fmt.Sprintf("INSERT INTO %s (mission_id, name, country, notes, complete)"+

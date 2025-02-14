@@ -1,19 +1,23 @@
-package http
+package handler
 
 import (
+	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
 	"net/http"
-	"sca/internal/middleware"
+	"sca/internal/app/transport/http/middleware"
 	"sca/internal/service"
 )
 
 type Handler struct {
-	services *service.Service
-	logger   *zap.Logger
+	services  *service.Service
+	validator *validator.Validate
 }
 
-func NewHandler(services *service.Service, logger *zap.Logger) *Handler {
-	return &Handler{services: services, logger: logger}
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{
+		services:  services,
+		validator: validator.New(),
+	}
 }
 
 func (h *Handler) InitRoutes() http.Handler {
@@ -35,7 +39,7 @@ func (h *Handler) InitRoutes() http.Handler {
 	mux.HandleFunc("GET /api/missions", h.getAllMissions)
 	mux.HandleFunc("GET /api/missions/{id}", h.getByIdMission)
 
-	handler := middleware.Logging(h.logger, mux)
+	handler := middleware.Logging(zap.L(), mux)
 
 	return handler
 }

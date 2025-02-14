@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"sca/internal/models"
+	"sca/internal/domain"
 )
 
 type CatPostgres struct {
@@ -14,18 +14,18 @@ func NewCatPostgres(db *sqlx.DB) *CatPostgres {
 	return &CatPostgres{db: db}
 }
 
-func (r *CatPostgres) Create(cat models.Cat) (int, error) {
+func (r *CatPostgres) Create(cat domain.Cat) (int, error) {
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (name, years_of_experience, breed, salary)" +
+	query := fmt.Sprintf("INSERT INTO %s (name, years_of_experience, breed, salary)"+
 		" VALUES ($1, $2, $3, $4) RETURNING ID", CatsTable)
 	err := r.db.QueryRow(query, cat.Name, cat.YearsOfExperience, cat.Breed, cat.Salary).Scan(&id)
 
 	return id, err
 }
 
-func (r *CatPostgres) GetById(id int) (models.Cat, error) {
-	var cat models.Cat
+func (r *CatPostgres) GetById(id int) (domain.Cat, error) {
+	var cat domain.Cat
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", CatsTable)
 	err := r.db.Get(&cat, query, id)
@@ -33,8 +33,8 @@ func (r *CatPostgres) GetById(id int) (models.Cat, error) {
 	return cat, err
 }
 
-func (r *CatPostgres) GetAll() ([]models.Cat, error) {
-	var cats []models.Cat
+func (r *CatPostgres) GetAll() ([]domain.Cat, error) {
+	var cats []domain.Cat
 
 	query := fmt.Sprintf("SELECT * FROM %s", CatsTable)
 	err := r.db.Select(&cats, query)
@@ -42,7 +42,7 @@ func (r *CatPostgres) GetAll() ([]models.Cat, error) {
 	return cats, err
 }
 
-func (r *CatPostgres) Update(id int, cat models.UpdatedCat) error {
+func (r *CatPostgres) Update(id int, cat domain.UpdatedCat) error {
 	query := fmt.Sprintf("UPDATE %s SET salary=$1 WHERE id=$2", CatsTable)
 	_, err := r.db.Exec(query, cat.Salary, id)
 

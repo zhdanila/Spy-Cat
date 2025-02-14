@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	"sca/internal/models"
+	"sca/internal/domain"
 )
 
 const (
@@ -26,24 +26,24 @@ func NewRepository(db *sqlx.DB) *Repository {
 }
 
 type Cat interface {
-	Create(cat models.Cat) (int, error)
-	GetById(id int) (models.Cat, error)
-	GetAll() ([]models.Cat, error)
-	Update(id int, cat models.UpdatedCat) error
+	Create(cat domain.Cat) (int, error)
+	GetById(id int) (domain.Cat, error)
+	GetAll() ([]domain.Cat, error)
+	Update(id int, cat domain.UpdatedCat) error
 	Delete(id int) error
 }
 
 type Mission interface {
-	Create(mission models.Mission) (int, error)
-	Update(id int, mission models.UpdatedMission) error
+	Create(mission domain.Mission) (int, error)
+	Update(id int, mission domain.UpdatedMission) error
 	Delete(id int) error
-	GetByID(id int) (models.Mission, error)
-	GetAll() ([]models.Mission, error)
+	GetByID(id int) (domain.Mission, error)
+	GetAll() ([]domain.Mission, error)
 	DeleteTarget(missionId, targetId int) error
-	CreateTarget(missionId int, target models.Target) (int, error)
+	CreateTarget(missionId int, target domain.Target) (int, error)
 }
 
 type Target interface {
-	GetAll() ([]models.Target, error)
-	GetById(id int) (models.Target, error)
+	GetAll() ([]domain.Target, error)
+	GetById(id int) (domain.Target, error)
 }

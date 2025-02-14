@@ -1,4 +1,4 @@
-package models
+package domain
 
 type Target struct {
 	ID        int    `json:"ID"`

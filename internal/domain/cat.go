@@ -1,4 +1,4 @@
-package models
+package domain
 
 type Cat struct {
 	ID                int     `json:"id"`

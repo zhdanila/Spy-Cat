@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"sca/internal/models"
+	"sca/internal/domain"
 )
 
 type TargetPostgres struct {
@@ -14,8 +14,8 @@ func NewTargetPostgres(db *sqlx.DB) *TargetPostgres {
 	return &TargetPostgres{db: db}
 }
 
-func (r *TargetPostgres) GetAll() ([]models.Target, error) {
-	var targets []models.Target
+func (r *TargetPostgres) GetAll() ([]domain.Target, error) {
+	var targets []domain.Target
 
 	query := fmt.Sprintf("SELECT * FROM %s", TargetsTable)
 	err := r.db.Select(&targets, query)
@@ -23,8 +23,8 @@ func (r *TargetPostgres) GetAll() ([]models.Target, error) {
 	return targets, err
 }
 
-func (r *TargetPostgres) GetById(id int) (models.Target, error) {
-	var target models.Target
+func (r *TargetPostgres) GetById(id int) (domain.Target, error) {
+	var target domain.Target
 
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", TargetsTable)
 	err := r.db.Get(&target, query, id)

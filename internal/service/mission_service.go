@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"sca/internal/models"
+	"sca/internal/domain"
 	"sca/internal/repository"
 )
 
@@ -15,7 +15,7 @@ func NewMissionService(missionRepo repository.Mission, targetsRepo repository.Ta
 	return &MissionService{missionRepo: missionRepo, targetsRepo: targetsRepo}
 }
 
-func (s *MissionService) Create(missionToAdd models.Mission) (int, error) {
+func (s *MissionService) Create(missionToAdd domain.Mission) (int, error) {
 	//check one cat can only have one mission at a time
 	missions, err := s.missionRepo.GetAll()
 	if err != nil {
@@ -39,7 +39,7 @@ func (s *MissionService) Create(missionToAdd models.Mission) (int, error) {
 	return s.missionRepo.Create(missionToAdd)
 }
 
-func (s *MissionService) Update(id int, updatedMission models.UpdatedMission) error {
+func (s *MissionService) Update(id int, updatedMission domain.UpdatedMission) error {
 	//check if either the target or the mission is completed
 	if updatedMission.Notes != "" {
 		mission, err := s.missionRepo.GetByID(id)
@@ -88,7 +88,7 @@ func (s *MissionService) Update(id int, updatedMission models.UpdatedMission) er
 	}
 
 	if state {
-		err := s.missionRepo.Update(id, models.UpdatedMission{Complete: true})
+		err := s.missionRepo.Update(id, domain.UpdatedMission{Complete: true})
 		if err != nil {
 			return err
 		}
@@ -111,11 +111,11 @@ func (s *MissionService) Delete(id int) error {
 	return s.missionRepo.Delete(id)
 }
 
-func (s *MissionService) GetByID(id int) (models.Mission, error) {
+func (s *MissionService) GetByID(id int) (domain.Mission, error) {
 	return s.missionRepo.GetByID(id)
 }
 
-func (s *MissionService) GetAll() ([]models.Mission, error) {
+func (s *MissionService) GetAll() ([]domain.Mission, error) {
 	return s.missionRepo.GetAll()
 }
 
@@ -133,7 +133,7 @@ func (s *MissionService) DeleteTarget(missionId, targetId int) error {
 	return s.missionRepo.DeleteTarget(missionId, targetId)
 }
 
-func (s *MissionService) CreateTarget(missionId int, target models.Target) (int, error) {
+func (s *MissionService) CreateTarget(missionId int, target domain.Target) (int, error) {
 	//check if the mission is already completed
 	mission, err := s.missionRepo.GetByID(missionId)
 	if err != nil {

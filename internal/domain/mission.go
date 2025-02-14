@@ -1,4 +1,4 @@
-package models
+package domain
 
 type Mission struct {
 	ID       int      `json:"id" db:"id"`
