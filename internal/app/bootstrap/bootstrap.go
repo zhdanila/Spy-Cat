@@ -41,7 +41,7 @@ func Website() {
 		}
 	}()
 
-	zap.L().Info("Online Shop Backend started")
+	zap.L().Info("Spy-Cats started")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
