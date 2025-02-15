@@ -28,15 +28,17 @@ type SpyCat interface {
 }
 
 type Mission interface {
-	CreateMission(mission *domain.Mission, targets []domain.Target) (int, error)
+	CreateMission(mission *domain.Mission, tx *sqlx.Tx) (int, error)
 	DeleteMission(missionID int) error
 	UpdateMissionCompletion(missionID int, isCompleted bool) error
 	GetMission(missionID int) (*domain.Mission, error)
 	ListMissions() ([]domain.Mission, error)
 	AssignSpyCatToMission(catID, missionID int) error
+	GetTX() (*sqlx.Tx, error)
 }
 
 type Target interface {
+	AddTargetsToMissionTX(missionID int, targets []domain.Target, tx *sqlx.Tx) error
 	AddTargetsToMission(missionID int, targets []domain.Target) error
 	DeleteTarget(targetID int) error
 	UpdateTargetCompletion(targetID int, isCompleted bool) error

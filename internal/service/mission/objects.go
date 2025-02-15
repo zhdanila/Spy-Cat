@@ -1,30 +1,22 @@
 package mission
 
-import "time"
+import (
+	"sca/internal/service/target"
+	"time"
+)
 
 type Mission struct {
-	ID          int       `json:"id"`
-	CatID       int       `json:"cat_id"`
-	Targets     []Target  `json:"targets"`
-	IsCompleted bool      `json:"is_completed"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-}
-
-type Target struct {
-	ID          int       `json:"id"`
-	MissionID   int       `json:"mission_id"`
-	Name        string    `json:"name"`
-	Country     string    `json:"country"`
-	Notes       *string   `json:"notes"`
-	IsCompleted bool      `json:"is_completed"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID          int             `json:"id"`
+	CatID       int             `json:"cat_id"`
+	Targets     []target.Target `json:"targets"`
+	IsCompleted bool            `json:"is_completed"`
+	CreatedAt   time.Time       `json:"created_at"`
+	UpdatedAt   time.Time       `json:"updated_at"`
 }
 
 type CreateMissionRequest struct {
-	CatID   int      `json:"cat_id" validate:"required"`
-	Targets []Target `json:"targets" validate:"required,dive"`
+	CatID   int             `json:"cat_id" validate:"required"`
+	Targets []target.Target `json:"targets" validate:"required,dive"`
 }
 
 type CreateMissionResponse struct {

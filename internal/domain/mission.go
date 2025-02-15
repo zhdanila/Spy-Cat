@@ -8,4 +8,5 @@ type Mission struct {
 	IsCompleted bool      `db:"is_completed"`
 	CreatedAt   time.Time `db:"created_at"`
 	UpdatedAt   time.Time `db:"updated_at"`
+	Targets     []Target
 }

@@ -17,7 +17,7 @@ func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		SpyCat:  spy_cat.NewService(repo.SpyCat),
 		Mission: mission.NewService(repo.Mission, repo.Target),
-		Target:  mission.NewService(repo.Mission, repo.Target),
+		Target:  target.NewService(repo.Mission, repo.Target),
 	}
 }
 
