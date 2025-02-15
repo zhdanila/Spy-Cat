@@ -9,6 +9,15 @@ import (
 	"strconv"
 )
 
+// CreateSpyCat @Summary Create a new SpyCat
+// @Description Creates a new SpyCat with the provided details
+// @Tags SpyCats
+// @ID create-spycat
+// @Accept  json
+// @Produce  json
+// @Param request body spy_cat.CreateSpyCatRequest true "SpyCat Creation Request"
+// @Success 201 {string} string "Spy Cat with id {id} was successfully created"
+// @Router /spycat [post]
 func (h *Handler) CreateSpyCat(w http.ResponseWriter, r *http.Request) {
 	var (
 		err  error
@@ -30,6 +39,14 @@ func (h *Handler) CreateSpyCat(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Spy Cat with id %d was successfully created", resp.ID)))
 }
 
+// GetSpyCat @Summary Get SpyCat by ID
+// @Description Retrieves a SpyCat by its ID
+// @Tags SpyCats
+// @ID get-spycat
+// @Produce  json
+// @Param id path int true "SpyCat ID"
+// @Success 200 {object} spy_cat.GetSpyCatResponse
+// @Router /spycat/{id} [get]
 func (h *Handler) GetSpyCat(w http.ResponseWriter, r *http.Request) {
 	var (
 		err   error
@@ -61,6 +78,13 @@ func (h *Handler) GetSpyCat(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ListSpyCats @Summary List all SpyCats
+// @Description Retrieves a list of all SpyCats
+// @Tags SpyCats
+// @ID list-spycats
+// @Produce  json
+// @Success 200 {object} spy_cat.ListSpyCatsResponse
+// @Router /spycat [get]
 func (h *Handler) ListSpyCats(w http.ResponseWriter, r *http.Request) {
 	var (
 		err  error
@@ -83,6 +107,16 @@ func (h *Handler) ListSpyCats(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UpdateSpyCatSalary @Summary Update SpyCat Salary
+// @Description Updates the salary of a SpyCat
+// @Tags SpyCats
+// @ID update-spycat-salary
+// @Accept  json
+// @Produce  json
+// @Param id path int true "SpyCat ID"
+// @Param request body spy_cat.UpdateSpyCatSalaryRequest true "SpyCat Salary Update Request"
+// @Success 200 {string} string "Spy Cat salary updated successfully"
+// @Router /spycat/{id}/salary [put]
 func (h *Handler) UpdateSpyCatSalary(w http.ResponseWriter, r *http.Request) {
 	var (
 		err   error
@@ -111,6 +145,14 @@ func (h *Handler) UpdateSpyCatSalary(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Spy Cat salary updated successfully"))
 }
 
+// DeleteSpyCat @Summary Delete a SpyCat
+// @Description Deletes a SpyCat by its ID
+// @Tags SpyCats
+// @ID delete-spycat
+// @Produce  json
+// @Param id path int true "SpyCat ID"
+// @Success 200 {string} string "Spy Cat deleted successfully"
+// @Router /spycat/{id} [delete]
 func (h *Handler) DeleteSpyCat(w http.ResponseWriter, r *http.Request) {
 	var (
 		err   error

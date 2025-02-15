@@ -1,0 +1,488 @@
+definitions:
+  sca_internal_service_mission.AssignSpyCatToMissionRequest:
+    properties:
+      cat_id:
+        type: integer
+      mission_id:
+        type: integer
+    type: object
+  sca_internal_service_mission.CreateMissionRequest:
+    properties:
+      cat_id:
+        type: integer
+      targets:
+        items:
+          $ref: '#/definitions/sca_internal_service_target.Target'
+        type: array
+    required:
+    - cat_id
+    - targets
+    type: object
+  sca_internal_service_mission.CreateMissionResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  sca_internal_service_mission.GetMissionResponse:
+    properties:
+      mission:
+        $ref: '#/definitions/sca_internal_service_mission.Mission'
+    type: object
+  sca_internal_service_mission.ListMissionsResponse:
+    properties:
+      missions:
+        items:
+          $ref: '#/definitions/sca_internal_service_mission.Mission'
+        type: array
+    type: object
+  sca_internal_service_mission.Mission:
+    properties:
+      cat_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+      targets:
+        items:
+          $ref: '#/definitions/sca_internal_service_target.Target'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  sca_internal_service_mission.UpdateMissionCompletionRequest:
+    properties:
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+    type: object
+  sca_internal_service_spy_cat.CreateSpyCatRequest:
+    properties:
+      breed:
+        maxLength: 50
+        minLength: 1
+        type: string
+      name:
+        maxLength: 100
+        minLength: 1
+        type: string
+      salary:
+        minimum: 0
+        type: number
+      years_of_experience:
+        minimum: 0
+        type: integer
+    required:
+    - breed
+    - name
+    - salary
+    - years_of_experience
+    type: object
+  sca_internal_service_spy_cat.GetSpyCatResponse:
+    properties:
+      spy_cat:
+        $ref: '#/definitions/sca_internal_service_spy_cat.SpyCat'
+    type: object
+  sca_internal_service_spy_cat.ListSpyCatsResponse:
+    properties:
+      spy_cats:
+        items:
+          $ref: '#/definitions/sca_internal_service_spy_cat.SpyCat'
+        type: array
+    type: object
+  sca_internal_service_spy_cat.SpyCat:
+    properties:
+      breed:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      salary:
+        type: number
+      updated_at:
+        type: string
+      years_of_experience:
+        type: integer
+    type: object
+  sca_internal_service_spy_cat.UpdateSpyCatSalaryRequest:
+    properties:
+      id:
+        type: integer
+      salary:
+        minimum: 0
+        type: number
+    required:
+    - salary
+    type: object
+  sca_internal_service_target.AddTargetsToMissionRequest:
+    properties:
+      mission_id:
+        type: integer
+      targets:
+        items:
+          $ref: '#/definitions/sca_internal_service_target.Target'
+        type: array
+    required:
+    - mission_id
+    - targets
+    type: object
+  sca_internal_service_target.Target:
+    properties:
+      country:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+      mission_id:
+        type: integer
+      name:
+        type: string
+      notes:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  sca_internal_service_target.UpdateTargetCompletionRequest:
+    properties:
+      id:
+        type: integer
+      is_completed:
+        type: boolean
+    type: object
+  sca_internal_service_target.UpdateTargetNotesRequest:
+    properties:
+      id:
+        type: integer
+      notes:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /mission:
+    get:
+      description: Retrieves a list of all missions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sca_internal_service_mission.ListMissionsResponse'
+      tags:
+      - Missions
+    post:
+      consumes:
+      - application/json
+      description: Creates a new mission with the specified details
+      parameters:
+      - description: Mission details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_mission.CreateMissionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/sca_internal_service_mission.CreateMissionResponse'
+      tags:
+      - Missions
+  /mission/{id}:
+    delete:
+      description: Deletes a mission by ID
+      parameters:
+      - description: Mission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Mission deleted successfully
+          schema:
+            type: string
+      tags:
+      - Missions
+    get:
+      description: Retrieves a specific mission by its ID
+      parameters:
+      - description: Mission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sca_internal_service_mission.GetMissionResponse'
+      tags:
+      - Missions
+  /mission/{id}/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assigns a Spy Cat to a specified mission
+      parameters:
+      - description: Mission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Assignment details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_mission.AssignSpyCatToMissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Spy Cat assigned to mission successfully
+          schema:
+            type: string
+      tags:
+      - Missions
+  /mission/{id}/completion:
+    put:
+      consumes:
+      - application/json
+      description: Updates the completion status of a mission
+      parameters:
+      - description: Mission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update completion status
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_mission.UpdateMissionCompletionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Mission completion updated successfully
+          schema:
+            type: string
+      tags:
+      - Missions
+  /mission/{id}/targets:
+    post:
+      consumes:
+      - application/json
+      description: Adds multiple targets to a specific mission.
+      parameters:
+      - description: Mission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Targets Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_target.AddTargetsToMissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Targets added to mission successfully
+          schema:
+            type: string
+      summary: Add targets to a mission
+      tags:
+      - Targets
+  /spycat:
+    get:
+      description: Retrieves a list of all SpyCats
+      operationId: list-spycats
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sca_internal_service_spy_cat.ListSpyCatsResponse'
+      tags:
+      - SpyCats
+    post:
+      consumes:
+      - application/json
+      description: Creates a new SpyCat with the provided details
+      operationId: create-spycat
+      parameters:
+      - description: SpyCat Creation Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_spy_cat.CreateSpyCatRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Spy Cat with id {id} was successfully created
+          schema:
+            type: string
+      tags:
+      - SpyCats
+  /spycat/{id}:
+    delete:
+      description: Deletes a SpyCat by its ID
+      operationId: delete-spycat
+      parameters:
+      - description: SpyCat ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Spy Cat deleted successfully
+          schema:
+            type: string
+      tags:
+      - SpyCats
+    get:
+      description: Retrieves a SpyCat by its ID
+      operationId: get-spycat
+      parameters:
+      - description: SpyCat ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sca_internal_service_spy_cat.GetSpyCatResponse'
+      tags:
+      - SpyCats
+  /spycat/{id}/salary:
+    put:
+      consumes:
+      - application/json
+      description: Updates the salary of a SpyCat
+      operationId: update-spycat-salary
+      parameters:
+      - description: SpyCat ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: SpyCat Salary Update Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_spy_cat.UpdateSpyCatSalaryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Spy Cat salary updated successfully
+          schema:
+            type: string
+      tags:
+      - SpyCats
+  /target/{id}:
+    delete:
+      description: Deletes a specific target.
+      parameters:
+      - description: Target ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Target deleted successfully
+          schema:
+            type: string
+      summary: Delete a target
+      tags:
+      - Targets
+  /target/{id}/completion:
+    put:
+      consumes:
+      - application/json
+      description: Updates the completion status of a target.
+      parameters:
+      - description: Target ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Completion Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_target.UpdateTargetCompletionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Target completion updated successfully
+          schema:
+            type: string
+      summary: Update target completion
+      tags:
+      - Targets
+  /target/{id}/notes:
+    put:
+      consumes:
+      - application/json
+      description: Updates the notes of a target.
+      parameters:
+      - description: Target ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Notes Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sca_internal_service_target.UpdateTargetNotesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Target notes updated successfully
+          schema:
+            type: string
+      summary: Update target notes
+      tags:
+      - Targets
+swagger: "2.0"
