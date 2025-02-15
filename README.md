@@ -30,48 +30,50 @@ DB_SSLMODE=disable
 
 To load environment variables, include this in your shell configuration or use the export command:
 
+```bash
 export $(shell sed 's/=.*//g' .env)
+```
 
-Running the Application
-	1.	Start the application:
+### Running the Application
 
-make up
+1. **Start the application**:
+   ```bash
+   make up
+   ```
+   This will start the server using `go run cmd/server/main.go`.
 
-This will start the server using go run cmd/server/main.go.
+2. **Run Database Migrations**:
+   To apply database migrations, use the following command:
+   ```bash
+   make migrate-up
+   ```
+   To reset the migrations:
+   ```bash
+   make migrate-down
+   ```
 
-	2.	Run Database Migrations:
-To apply database migrations, use the following command:
+3. **Swagger Documentation**:
+   To generate Swagger API documentation, use:
+   ```bash
+   make swagger
+   ```
+   This will generate the necessary Swagger files for API documentation.
 
-make migrate-up
+4. **Build Docker Image (Optional)**:
+   To build the Docker image for the application:
+   ```bash
+   make dbuild
+   ```
 
-To reset the migrations:
+### Postman Collection
 
-make migrate-down
+You can import the `SpyCat API.postman_collection.json` into Postman to test the API endpoints.
 
-
-	3.	Swagger Documentation:
-To generate Swagger API documentation, use:
-
-make swagger
-
-This will generate the necessary Swagger files for API documentation.
-
-	4.	Build Docker Image (Optional):
-To build the Docker image for the application:
-
-make dbuild
-
-
-
-Postman Collection
-
-You can import the SpyCat API.postman_collection.json into Postman to test the API endpoints.
-
-Dependencies
+### Dependencies
 
 The application uses the following key dependencies:
-	•	github.com/jmoiron/sqlx: SQL library for Go.
-	•	github.com/lib/pq: PostgreSQL driver for Go.
-	•	github.com/spf13/viper: Configuration management library.
-	•	go.uber.org/zap: Structured logging library.
-	•	github.com/pressly/goose: Database migration tool.
+- `github.com/jmoiron/sqlx`: SQL library for Go.
+- `github.com/lib/pq`: PostgreSQL driver for Go.
+- `github.com/spf13/viper`: Configuration management library.
+- `go.uber.org/zap`: Structured logging library.
+- `github.com/pressly/goose`: Database migration tool.
