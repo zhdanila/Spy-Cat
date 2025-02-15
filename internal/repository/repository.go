@@ -5,45 +5,40 @@ import (
 	"sca/internal/domain"
 )
 
-const (
-	CatsTable     string = "cats"
-	MissionsTable string = "missions"
-	TargetsTable  string = "targets"
-)
-
 type Repository struct {
-	Cat
+	SpyCat
 	Mission
 	Target
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Cat:     NewCatPostgres(db),
-		Mission: NewMissionPostgres(db),
-		Target:  NewTargetPostgres(db),
+		SpyCat:  NewSpyCatRepository(db),
+		Mission: NewMissionRepository(db),
+		Target:  NewTargetRepository(db),
 	}
 }
 
-type Cat interface {
-	Create(cat domain.Cat) (int, error)
-	GetById(id int) (domain.Cat, error)
-	GetAll() ([]domain.Cat, error)
-	Update(id int, cat domain.UpdatedCat) error
-	Delete(id int) error
+type SpyCat interface {
+	CreateSpyCat(cat *domain.SpyCat) error
+	DeleteSpyCat(catID int) error
+	UpdateSpyCatSalary(catID int, salary float64) error
+	GetSpyCat(catID int) (*domain.SpyCat, error)
+	ListSpyCats() ([]domain.SpyCat, error)
 }
 
 type Mission interface {
-	Create(mission domain.Mission) (int, error)
-	Update(id int, mission domain.UpdatedMission) error
-	Delete(id int) error
-	GetByID(id int) (domain.Mission, error)
-	GetAll() ([]domain.Mission, error)
-	DeleteTarget(missionId, targetId int) error
-	CreateTarget(missionId int, target domain.Target) (int, error)
+	CreateMission(mission *domain.Mission, targets []domain.Target) (int, error)
+	DeleteMission(missionID int) error
+	UpdateMissionCompletion(missionID int, isCompleted bool) error
+	GetMission(missionID int) (*domain.Mission, error)
+	ListMissions() ([]domain.Mission, error)
+	AssignSpyCatToMission(catID, missionID int) error
 }
 
 type Target interface {
-	GetAll() ([]domain.Target, error)
-	GetById(id int) (domain.Target, error)
+	AddTargetsToMission(missionID int, targets []domain.Target) error
+	DeleteTarget(targetID int) error
+	UpdateTargetCompletion(targetID int, isCompleted bool) error
+	UpdateTargetNotes(targetID int, notes string) error
 }

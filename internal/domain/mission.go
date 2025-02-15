@@ -1,15 +1,11 @@
 package domain
 
-type Mission struct {
-	ID       int      `json:"id" db:"id"`
-	CatID    int      `json:"catID" db:"cat_id"`
-	Complete bool     `json:"complete" db:"complete"`
-	Targets  []Target `json:"targets" db:"-"`
-}
+import "time"
 
-type UpdatedMission struct {
-	Complete bool     `json:"complete"`
-	Notes    string   `json:"notes"`
-	CatID    int      `json:"catID"`
-	Targets  []Target `json:"targets" db:"-"`
+type Mission struct {
+	ID          int       `db:"id"`
+	CatID       *int      `db:"cat_id"`
+	IsCompleted bool      `db:"is_completed"`
+	CreatedAt   time.Time `db:"created_at"`
+	UpdatedAt   time.Time `db:"updated_at"`
 }
