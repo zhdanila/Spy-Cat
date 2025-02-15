@@ -1,74 +1,77 @@
 # Spy Cat Agency (SCA) CRUD Application
 
 ## Overview
-This project is a robust CRUD application for managing operations at the Spy Cat Agency (SCA). It showcases building RESTful APIs in Go, interacting with PostgreSQL using sqlx, integrating third-party services, and optionally creating user interfaces.
 
-## Requirements
-Ensure you have the following dependencies installed:
-- go: 1.22 version
-- [cleanenv](https://github.com/ilyakaznacheev/cleanenv): Reads environment variables into Go structs.
-- [godotenv](https://github.com/joho/godotenv): Loads environment variables from a `.env` file.
-- [zap](https://go.uber.org/zap): High-performance logging library.
-- [sqlx](https://github.com/jmoiron/sqlx): Database library with extensions for Go.
-- [pq](https://github.com/lib/pq): PostgreSQL driver for Go.
-- [goose](https://github.com/pressly/goose): CLI tool for managing Go migrations.
+The Spy Cat Agency (SCA) CRUD Application is a comprehensive system for managing operations at the Spy Cat Agency. This project is designed to demonstrate how to build RESTful APIs in Go, interact with PostgreSQL using sqlx, integrate third-party services, and optionally build user interfaces.
 
-## Installation
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
+## Features
+- **RESTful API**: Exposes endpoints for CRUD operations on the Spy Cat database.
+- **PostgreSQL Integration**: Uses sqlx to interact with a PostgreSQL database.
+- **Migrations**: Manage database schema changes using goose.
+- **Swagger API Documentation**: Automatically generated documentation for the API using swag.
+- **Docker Support**: Containerized application for ease of deployment and scalability.
 
-2. **Install dependencies:**
-   ```bash
-   go get -u github.com/ilyakaznacheev/cleanenv
-   go get github.com/joho/godotenv
-   go get -u go.uber.org/zap
-   go get github.com/jmoiron/sqlx
-   go get github.com/lib/pq
-   go get -u github.com/pressly/goose/cmd/goose
-   ```
+## Getting Started
 
-3. **Setup environment variables:**
-   Create a `.env` file with your parameters:
-   ```dotenv
-   SERVICE_HOST=
-   SERVICE_PORT=
-   SERVICE_READ_TIMEOUT_SECONDS=
-   SERVICE_WRITE_TIMEOUT_SECONDS=
-   SERVICE_MAX_HEADER_BYTES=
-  
-   POSTGRES_HOST=
-   POSTGRES_PORT=
-   POSTGRES_USERNAME=
-   POSTGRES_PASSWORD=
-   POSTGRES_DBNAME=
-   POSTGRES_SSL=
-   ```
+### Environment Variables
 
-4. **Run PostgreSQL in Docker:**
-   Example setup:
-   ```bash
-   sudo docker run --name=sca-db -e POSTGRES_PASSWORD=qwerty -p 5436:5432 -d postgres
-   sudo docker exec -it <postgresql_container_id> /bin/bash
-   psql -U postgres
-   CREATE DATABASE sca;
-   ```
+Create a `.env` file with the following configuration:
 
-5. **Apply database migrations:**
-   ```bash
-   goose -dir migrations postgres "user=postgres dbname=postgres sslmode=disable host=localhost port=5436 password=qwerty" up
-   ```
+```dotenv
+HTTP_PORT=8080
 
-## Usage
-- Modify the `.env` file with your specific configurations.
-- Start the application:
-  ```bash
-  make build
-  make run
-  ```
+DB_USERNAME=postgres
+DB_PASSWORD=qwerty
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=spy_cats
+DB_SSLMODE=disable
+```
 
-## Tests
-- Find postman tests in postman_tests
+To load environment variables, include this in your shell configuration or use the export command:
 
+export $(shell sed 's/=.*//g' .env)
+
+Running the Application
+	1.	Start the application:
+
+make up
+
+This will start the server using go run cmd/server/main.go.
+
+	2.	Run Database Migrations:
+To apply database migrations, use the following command:
+
+make migrate-up
+
+To reset the migrations:
+
+make migrate-down
+
+
+	3.	Swagger Documentation:
+To generate Swagger API documentation, use:
+
+make swagger
+
+This will generate the necessary Swagger files for API documentation.
+
+	4.	Build Docker Image (Optional):
+To build the Docker image for the application:
+
+make dbuild
+
+
+
+Postman Collection
+
+You can import the SpyCat API.postman_collection.json into Postman to test the API endpoints.
+
+Dependencies
+
+The application uses the following key dependencies:
+	•	github.com/jmoiron/sqlx: SQL library for Go.
+	•	github.com/lib/pq: PostgreSQL driver for Go.
+	•	github.com/spf13/viper: Configuration management library.
+	•	go.uber.org/zap: Structured logging library.
+	•	github.com/pressly/goose: Database migration tool.

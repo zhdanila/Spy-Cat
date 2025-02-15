@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "1b5ed863-476f-42ac-bdb0-487a0d89c69b",
+		"name": "SpyCat API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32398328"
+	},
+	"item": [
+		{
+			"name": "SpyCat",
+			"item": [
+				{
+					"name": "Create SpyCat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Whiskers\",\n    \"years_of_experience\": 5,\n    \"breed\": \"Persian\",\n    \"salary\": 1500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/spycat"
+					},
+					"response": []
+				},
+				{
+					"name": "Get SpyCat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/spycat/1"
+					},
+					"response": []
+				},
+				{
+					"name": "List SpyCats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/spycat"
+					},
+					"response": []
+				},
+				{
+					"name": "Update SpyCat Salary",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"salary\": 2000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/spycat/1/salary"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete SpyCat",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/spycat/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mission",
+			"item": [
+				{
+					"name": "Create Mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": 3,\n    \"targets\": [\n        {\n            \"name\": \"Target 1\",\n            \"country\": \"USA\"\n        },\n        {\n            \"name\": \"Target 2\",\n            \"country\": \"Ukraine\"\n        },\n        {\n            \"name\": \"Target 3\",\n            \"country\": \"Poland\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/mission"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mission",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8080/mission/1"
+					},
+					"response": []
+				},
+				{
+					"name": "List Missions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8080/mission"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Mission Completion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_completed\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/mission/1/completion"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Mission",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/mission/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Spy Cat to Mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cat_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/mission/7/assign"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Target",
+			"item": [
+				{
+					"name": "Add Targets to Mission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"targets\": [\n    {\n      \"name\": \"Target 1\",\n      \"country\": \"USA\",\n      \"is_completed\": false\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/mission/7/targets"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Target Completion",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"is_completed\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/target/6/completion"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Target Notes",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notes\": \"Updated notes for target.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/target/6/notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Target",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8080/target/6"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
