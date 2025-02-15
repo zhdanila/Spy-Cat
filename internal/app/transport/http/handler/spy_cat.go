@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sca/internal/service/spy_cat"
 	"sca/pkg/response"
@@ -10,8 +11,9 @@ import (
 
 func (h *Handler) CreateSpyCat(w http.ResponseWriter, r *http.Request) {
 	var (
-		err error
-		req spy_cat.CreateSpyCatRequest
+		err  error
+		req  spy_cat.CreateSpyCatRequest
+		resp *spy_cat.CreateSpyCatResponse
 	)
 
 	if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -19,13 +21,13 @@ func (h *Handler) CreateSpyCat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if _, err = h.services.SpyCat.CreateSpyCat(&req); err != nil {
+	if resp, err = h.services.SpyCat.CreateSpyCat(&req); err != nil {
 		response.NewErrorResponse(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("Spy Cat created successfully"))
+	w.Write([]byte(fmt.Sprintf("Spy Cat with id %d was successfully created", resp.ID)))
 }
 
 func (h *Handler) GetSpyCat(w http.ResponseWriter, r *http.Request) {
@@ -48,8 +50,15 @@ func (h *Handler) GetSpyCat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	responseData := map[string]interface{}{
+		"spy_cat": resp,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	if err := json.NewEncoder(w).Encode(responseData); err != nil {
+		response.NewErrorResponse(w, http.StatusInternalServerError, "Error encoding response")
+	}
 }
 
 func (h *Handler) ListSpyCats(w http.ResponseWriter, r *http.Request) {
@@ -63,8 +72,15 @@ func (h *Handler) ListSpyCats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	responseData := map[string]interface{}{
+		"spy_cats": resp,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(resp)
+	if err := json.NewEncoder(w).Encode(responseData); err != nil {
+		response.NewErrorResponse(w, http.StatusInternalServerError, "Error encoding response")
+	}
 }
 
 func (h *Handler) UpdateSpyCatSalary(w http.ResponseWriter, r *http.Request) {

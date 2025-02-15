@@ -41,13 +41,13 @@ func Website() {
 		}
 	}()
 
-	zap.L().Info("Spy-Cats started")
+	zap.L().Info("Spy-Cats Backend started")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
-	zap.L().Info("Online Shop Backend Shutting Down")
+	zap.L().Info("Spy-Cats Backend Shutting Down")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		zap.L().Fatal(fmt.Sprintf("error with shutting down server: %s", err.Error()))
