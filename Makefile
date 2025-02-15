@@ -12,3 +12,6 @@ migrate-down:
 
 swagger:
 	swag init --parseDependency --parseInternal -g cmd/server/main.go
+
+dbuild:
+	docker build -t image-optimization-api .
