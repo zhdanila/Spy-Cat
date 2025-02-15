@@ -10,10 +10,18 @@ import (
 
 func (h *Handler) AddTargetsToMission(w http.ResponseWriter, r *http.Request) {
 	var (
-		err error
-		req target.AddTargetsToMissionRequest
+		err   error
+		req   target.AddTargetsToMissionRequest
+		intId int
 	)
 
+	id := r.PathValue("id")
+	if intId, err = strconv.Atoi(id); err != nil {
+		response.NewErrorResponse(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	req.MissionID = intId
 	if err = json.NewDecoder(r.Body).Decode(&req); err != nil {
 		response.NewErrorResponse(w, http.StatusBadRequest, err.Error())
 		return

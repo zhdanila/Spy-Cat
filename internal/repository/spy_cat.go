@@ -50,7 +50,7 @@ func (s *SpyCatRepository) UpdateSpyCatSalary(catID int, salary float64) error {
 
 func (s *SpyCatRepository) GetSpyCat(catID int) (*domain.SpyCat, error) {
 	var cat domain.SpyCat
-	query := fmt.Sprintf("SELECT id, name, years_of_experience, breed, salary, created_at, updated_at FROM %s WHERE id = $1", SpyCatTable)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id = $1", SpyCatTable)
 
 	err := s.db.Get(&cat, query, catID)
 	if err != nil {
@@ -62,7 +62,7 @@ func (s *SpyCatRepository) GetSpyCat(catID int) (*domain.SpyCat, error) {
 
 func (s *SpyCatRepository) ListSpyCats() ([]domain.SpyCat, error) {
 	var cats []domain.SpyCat
-	query := fmt.Sprintf("SELECT id, name, years_of_experience, breed, salary, created_at, updated_at FROM %s", SpyCatTable)
+	query := fmt.Sprintf("SELECT * FROM %s", SpyCatTable)
 
 	err := s.db.Select(&cats, query)
 	if err != nil {

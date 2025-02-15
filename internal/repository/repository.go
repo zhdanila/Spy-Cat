@@ -38,6 +38,7 @@ type Mission interface {
 }
 
 type Target interface {
+	GetTarget(targetID int) (*domain.Target, error)
 	AddTargetsToMissionTX(missionID int, targets []domain.Target, tx *sqlx.Tx) error
 	AddTargetsToMission(missionID int, targets []domain.Target) error
 	DeleteTarget(targetID int) error
