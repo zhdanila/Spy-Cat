@@ -22,24 +22,28 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() http.Handler {
 	mux := http.NewServeMux()
-
-	//cats endpoints
-	mux.HandleFunc("POST /api/cats/create", h.createCat)
-	mux.HandleFunc("DELETE /api/cats/delete/{id}", h.deleteCat)
-	mux.HandleFunc("PUT /api/cats/update/{id}", h.updateCat)
-	mux.HandleFunc("GET /api/cats/", h.getAllCats)
-	mux.HandleFunc("GET /api/cats/{id}", h.getByIdCat)
-
-	//mission endpoints
-	mux.HandleFunc("POST /api/missions/create", h.createMission)
-	mux.HandleFunc("POST /api/missions/{mission_id}/create", h.createTarget)
-	mux.HandleFunc("DELETE /api/missions/delete/{id}", h.deleteMission)
-	mux.HandleFunc("DELETE /api/missions/{mission_id}/delete/target/{target_id}", h.deleteTargetInMission)
-	mux.HandleFunc("PUT /api/missions/update/{id}", h.updateMission)
-	mux.HandleFunc("GET /api/missions", h.getAllMissions)
-	mux.HandleFunc("GET /api/missions/{id}", h.getByIdMission)
-
 	handler := middleware.Logging(zap.L(), mux)
+
+	// Spy Cats
+	mux.Handle("POST /spycat", http.HandlerFunc(h.CreateSpyCat))
+	mux.Handle("GET /spycat/{id}", http.HandlerFunc(h.GetSpyCat))
+	mux.Handle("GET /spycat", http.HandlerFunc(h.ListSpyCats))
+	mux.Handle("PUT /spycat/{id}/salary", http.HandlerFunc(h.UpdateSpyCatSalary))
+	mux.Handle("DELETE /spycat/{id}", http.HandlerFunc(h.DeleteSpyCat))
+
+	// Missions
+	mux.Handle("POST /mission", http.HandlerFunc(h.CreateMission))
+	mux.Handle("GET /mission/{id}", http.HandlerFunc(h.GetMission))
+	mux.Handle("GET /mission", http.HandlerFunc(h.ListMissions))
+	mux.Handle("PUT /mission/{id}/completion", http.HandlerFunc(h.UpdateMissionCompletion))
+	mux.Handle("DELETE /mission/{id}", http.HandlerFunc(h.DeleteMission))
+	mux.Handle("POST /mission/{id}/assign", http.HandlerFunc(h.AssignSpyCatToMission))
+
+	// Targets
+	mux.Handle("POST /mission/{id}/targets", http.HandlerFunc(h.AddTargetsToMission))
+	mux.Handle("PUT /target/{id}/completion", http.HandlerFunc(h.UpdateTargetCompletion))
+	mux.Handle("PUT /target/{id}/notes", http.HandlerFunc(h.UpdateTargetNotes))
+	mux.Handle("DELETE /target/{id}", http.HandlerFunc(h.DeleteTarget))
 
 	return handler
 }

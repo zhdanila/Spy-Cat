@@ -1,10 +1,10 @@
 package service
 
 import (
-	"sca/internal/domain"
 	"sca/internal/repository"
 	"sca/internal/service/mission"
 	"sca/internal/service/spy_cat"
+	"sca/internal/service/target"
 )
 
 type Service struct {
@@ -22,25 +22,25 @@ func NewService(repo *repository.Repository) *Service {
 }
 
 type SpyCat interface {
-	CreateSpyCat(name string, yearsOfExperience int, breed string, salary float64) (int, error)
-	DeleteSpyCat(catID int) error
-	UpdateSpyCatSalary(catID int, salary float64) error
-	GetSpyCat(catID int) (*domain.SpyCat, error)
-	ListSpyCats() ([]domain.SpyCat, error)
+	CreateSpyCat(req *spy_cat.CreateSpyCatRequest) (*spy_cat.CreateSpyCatResponse, error)
+	GetSpyCat(req *spy_cat.GetSpyCatRequest) (*spy_cat.GetSpyCatResponse, error)
+	ListSpyCats(req *spy_cat.ListSpyCatsRequest) (*spy_cat.ListSpyCatsResponse, error)
+	UpdateSpyCatSalary(req *spy_cat.UpdateSpyCatSalaryRequest) (*spy_cat.UpdateSpyCatSalaryResponse, error)
+	DeleteSpyCat(req *spy_cat.DeleteSpyCatRequest) (*spy_cat.DeleteSpyCatResponse, error)
 }
 
 type Mission interface {
-	CreateMission(catID int, targets []domain.Target) (int, error)
-	DeleteMission(missionID int) error
-	UpdateMissionCompletion(missionID int, isCompleted bool) error
-	GetMission(missionID int) (*domain.Mission, error)
-	ListMissions() ([]domain.Mission, error)
-	AssignSpyCatToMission(catID, missionID int) error
+	CreateMission(req *mission.CreateMissionRequest) (*mission.CreateMissionResponse, error)
+	GetMission(req *mission.GetMissionRequest) (*mission.GetMissionResponse, error)
+	ListMissions(req *mission.ListMissionsRequest) (*mission.ListMissionsResponse, error)
+	UpdateMissionCompletion(req *mission.UpdateMissionCompletionRequest) (*mission.UpdateMissionCompletionResponse, error)
+	DeleteMission(req *mission.DeleteMissionRequest) (*mission.DeleteMissionResponse, error)
+	AssignSpyCatToMission(req *mission.AssignSpyCatToMissionRequest) (*mission.AssignSpyCatToMissionResponse, error)
 }
 
 type Target interface {
-	AddTargetsToMission(missionID int, targets []domain.Target) error
-	DeleteTarget(targetID int) error
-	UpdateTargetCompletion(targetID int, isCompleted bool) error
-	UpdateTargetNotes(targetID int, notes string) error
+	AddTargetsToMission(req *target.AddTargetsToMissionRequest) (*target.AddTargetsToMissionResponse, error)
+	DeleteTarget(req *target.DeleteTargetRequest) (*target.DeleteTargetResponse, error)
+	UpdateTargetCompletion(req *target.UpdateTargetCompletionRequest) (*target.UpdateTargetCompletionResponse, error)
+	UpdateTargetNotes(req *target.UpdateTargetNotesRequest) (*target.UpdateTargetNotesResponse, error)
 }
